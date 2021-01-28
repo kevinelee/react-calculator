@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Screen from "./Screen";
 import Button from "./Button";
 
@@ -9,40 +9,51 @@ export default function Calculator() {
   const [secondNum, setSecondNum] = useState(0);
 
   function evaluate() {
-    if (firstNum && secondNum) {
-      switch (equation) {
-        case "add":
-          setDisplayNum(firstNum + secondNum);
-          break;
-        case "subtract":
-          setDisplayNum(firstNum - secondNum);
-          break;
-        case "divide":
-          setDisplayNum(firstNum / secondNum);
-          break;
-        case "multiply":
-          setDisplayNum(firstNum * secondNum);
-          break;
-        default:
-          break;
+    if (displayNum < 100000000) {
+      if (firstNum && secondNum) {
+        switch (equation) {
+          case "add":
+            setDisplayNum(firstNum + secondNum);
+            break;
+          case "subtract":
+            setDisplayNum(firstNum - secondNum);
+            break;
+          case "divide":
+            setDisplayNum(firstNum / secondNum);
+            break;
+          case "multiply":
+            setDisplayNum(firstNum * secondNum);
+            if (displayNum >= 100000000) {
+              setDisplayNum("8====D");
+            }
+            break;
+          default:
+            break;
+        }
       }
+    } else {
     }
 
     console.log("eval-fn", firstNum);
-    console.log("eval-eq", equation);
     console.log("eval-sn", secondNum);
   }
 
-  function clicker(num) {
-    console.log("kevins firstNum", firstNum);
-    console.log(equation);
+  useEffect(() => {
+    if (!equation) {
+      setDisplayNum(firstNum);
+    } else {
+      setDisplayNum(secondNum);
+    }
+  }, [firstNum, secondNum]);
 
-    displayNum <= 100000000) {
+  function clicker(num) {
+    if (displayNum <= 100000000) {
       if (!equation) {
-        setDisplayNum(displayNum * 10 + num);
-        setFirstNum(() => displayNum);
+        setFirstNum(firstNum * 10 + num);
+        console.log(" firstNum", firstNum);
+        console.log(" displayNum", displayNum);
       } else {
-        setSecondNum(num * 10 + num);
+        setSecondNum(secondNum * 10 + num);
         setDisplayNum(secondNum);
       }
     } else {
@@ -71,17 +82,17 @@ export default function Calculator() {
           color="goldenrod"
           onClick={() => setEquation("divide")}
         />
-        <Button print="7" color="" onClick={() => clicker(7)} />
-        <Button print="8" color="" onClick={() => clicker(8)} />
-        <Button print="9" color="" onClick={() => clicker(9)} />
+        <Button print="7" color="white" onClick={() => clicker(7)} />
+        <Button print="8" color="white" onClick={() => clicker(8)} />
+        <Button print="9" color="white" onClick={() => clicker(9)} />
         <Button
           print="&#xd7;"
           color="goldenrod"
           onClick={() => setEquation("multiply")}
         />
-        <Button print="4" color="" />
-        <Button print="5" color="" />
-        <Button print="6" color="" />
+        <Button print="4" color="white" onClick={() => clicker(4)} />
+        <Button print="5" color="white" onClick={() => clicker(5)} />
+        <Button print="6" color="white" onClick={() => clicker(6)} />
         <Button
           print="&#x2212;"
           color="goldenrod"
@@ -89,9 +100,9 @@ export default function Calculator() {
             setEquation("subtract");
           }}
         />
-        <Button print="2" color="" />
-        <Button print="3" color="" />
-        <Button print="4" color="" />
+        <Button print="2" color="white" onClick={() => clicker(2)} />
+        <Button print="3" color="white" onClick={() => clicker(3)} />
+        <Button print="4" color="white" onClick={() => clicker(4)} />
         <Button
           print="+"
           color="goldenrod"
@@ -99,9 +110,9 @@ export default function Calculator() {
             setEquation("add");
           }}
         />
-        <Button print="0" color="" />
-        <Button print="1" color="" />
-        <Button print="." color="" />
+        <Button print="0" color="white" onClick={() => clicker(0)} />
+        <Button print="1" color="white" onClick={() => clicker(1)} />
+        <Button print="." color="white" />
         <Button print="=" color="goldenrod" onClick={() => evaluate()} />
       </div>
     </div>
