@@ -9,33 +9,34 @@ export default function Calculator() {
   const [secondNum, setSecondNum] = useState(0);
 
   function evaluate() {
-    if (displayNum < 100000000) {
-      if (firstNum && secondNum) {
-        switch (equation) {
-          case "add":
-            setDisplayNum(firstNum + secondNum);
-            break;
-          case "subtract":
-            setDisplayNum(firstNum - secondNum);
-            break;
-          case "divide":
-            setDisplayNum(firstNum / secondNum);
-            break;
-          case "multiply":
-            setDisplayNum(firstNum * secondNum);
-            if (displayNum >= 100000000) {
-              setDisplayNum("8====D");
-            }
-            break;
-          default:
-            break;
-        }
+    if (firstNum && secondNum) {
+      switch (equation) {
+        case "add":
+          setDisplayNum(firstNum + secondNum);
+          break;
+        case "subtract":
+          setDisplayNum(firstNum - secondNum);
+          break;
+        case "divide":
+          setDisplayNum(firstNum / secondNum);
+          break;
+        case "multiply":
+          setDisplayNum(firstNum * secondNum);
+          if (displayNum > 10000000) {
+            setDisplayNum("8====D");
+          }
+          break;
+        default:
+          break;
       }
-    } else {
     }
+  }
 
-    console.log("eval-fn", firstNum);
-    console.log("eval-sn", secondNum);
+  function clear() {
+    setFirstNum(0);
+    setEquation(null);
+    setSecondNum(0);
+    setDisplayNum(0);
   }
 
   useEffect(() => {
@@ -69,10 +70,7 @@ export default function Calculator() {
           print="AC"
           color="darkgray"
           onClick={() => {
-            setFirstNum(0);
-            setEquation(null);
-            setSecondNum(0);
-            setDisplayNum(0);
+            clear();
           }}
         />
         <Button print="+/-" color="darkgray" />
