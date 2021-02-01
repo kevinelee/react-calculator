@@ -1,72 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Screen from "./Screen";
 import Button from "./Button";
 
 export default function Calculator() {
   const [displayNum, setDisplayNum] = useState(0);
   const [equation, setEquation] = useState(null);
-  // const [firstNum, setFirstNum] = useState(0);
-  // const [secondNum, setSecondNum] = useState(0);
-
-  let firstNum = 0;
-  let secondNum = 0;
-  // let displayNum = 0;
+  const [firstNum, setFirstNum] = useState(0);
+  const [secondNum, setSecondNum] = useState(0);
 
   function evaluate() {
-    if (firstNum !== null && secondNum !== null) {
+    if (firstNum && secondNum) {
       switch (equation) {
         case "add":
-          firstNum += secondNum;
+          setDisplayNum(firstNum + secondNum);
 
           break;
         case "subtract":
-          firstNum -= secondNum;
+          setDisplayNum(firstNum - secondNum);
 
           break;
         case "divide":
-          firstNum /= secondNum;
+          setDisplayNum(firstNum / secondNum);
 
           break;
         case "multiply":
-          firstNum *= secondNum;
+          setDisplayNum(firstNum * secondNum);
 
           if (displayNum > 10000000) {
-            setDisplayNum("8======D");
+            setDisplayNum("8====D");
           }
           break;
         default:
           break;
       }
-      setDisplayNum(firstNum);
     }
   }
 
   function allClear() {
-    firstNum = 0;
-    secondNum = 0;
-    setDisplayNum(0);
+    setFirstNum(0);
+    setSecondNum(0);
+    setEquation(null);
   }
 
-  // useEffect(() => {
-  //   if (!equation) {
-  //     setDisplayNum(firstNum);
-  //   } else {
-  //     setDisplayNum(secondNum);
-  //   }
-  // }, [firstNum, secondNum]);
+  useEffect(() => {
+    if (!equation) {
+      setDisplayNum(firstNum);
+    } else {
+      setDisplayNum(secondNum);
+    }
+  }, [firstNum, secondNum]);
 
   function clicker(num) {
     if (displayNum <= 100000000) {
       if (!equation) {
-        firstNum = firstNum * 10 + num;
-        setDisplayNum(firstNum);
-        console.log(displayNum);
-        console.log(firstNum);
+        setFirstNum(firstNum * 10 + num);
       } else {
-        console.log('kevins hit');
-        
-        secondNum = secondNum * 10 + num;
-        setDisplayNum(secondNum);
+        setSecondNum(secondNum * 10 + num);
       }
     } else {
       alert("number too big daddy");
@@ -134,10 +123,3 @@ export default function Calculator() {
   );
 }
 
-// style={{
-//   height: "40rem",
-//   width: "24rem",
-//   border: "3px solid black ",
-//   borderRadius: "5%",
-//   zIndex: "10",
-// }}
